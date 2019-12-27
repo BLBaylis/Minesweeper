@@ -1,17 +1,11 @@
 package minesweeper;
 
-import java.util.Arrays;
+import java.util.Set;
 
-public class Grid {
-    GameSquare[][] grid;
+class Grid {
+    private GameSquare[][] grid;
     private int rows;
     private int cols;
-
-    Grid(int size) {
-        grid = new GameSquare[size][size];
-        this.rows = size;
-        this.cols = size;
-    }
 
     Grid(int rows, int cols) {
         grid = new GameSquare[rows][cols];
@@ -19,38 +13,41 @@ public class Grid {
         this.cols = cols;
     }
 
-    public int getCols() {
-        return cols;
+    void populateGrid(Set<Integer> bombIndices) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                GameSquare square = new GameSquare(bombIndices.contains(i * 9 + j));
+                grid[i][j] = square;
+            }
+        }
     }
 
-    public int getRows() {
-        return rows;
-    }
-
-    void setSquareValue(int index, GameSquare value) {
-        int row = index/cols;
-        int col = index % cols;
-        grid[row][col] = value;
-    }
-
-    void setSquareValue(int row, int col, GameSquare value) {
-        grid[row][col] = value;
-    }
-
-    public GameSquare getSquareValue(int index) {
-        int row = index/cols;
-        int col = index % cols;
-        return grid[row][col];
-    }
-
-    public GameSquare getSquareValue(int row, int col) {
-        return grid[row][col];
+    private int countAdjacentBombs(int row, int col) {
+        int adjacentBombsCount = 0;
+        for (int i = row - 1; i <= row + 1; i++) {
+            for (int j = col - 1; j <= col + 1; j++) {
+                if (i < 0 || i > 8 || j < 0 || j > 8) {
+                    continue;
+                }
+                boolean squareHasBomb = grid[i][j].getHasBomb();
+                if (squareHasBomb) {
+                    adjacentBombsCount++;
+                }
+            }
+        }
+        return adjacentBombsCount;
     }
 
     void printGrid() {
-        for (GameSquare[] row : grid) {
-            for (int i = 0; i < row.length; i++) {
-                System.out.print(row[i].toString());
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                GameSquare square = grid[i][j];
+                int adjacentBombs = countAdjacentBombs(i, j);
+                if (square.getHasBomb()) {
+                    System.out.print("X");
+                } else {
+                    System.out.print(adjacentBombs == 0 ? "." : adjacentBombs);
+                }
             }
             System.out.println();
         }

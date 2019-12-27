@@ -5,13 +5,13 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 
-public class MineSweeper {
+class MineSweeper {
 
     MineSweeper() {
 
     }
 
-    public final void run(String[] args) {
+    final void run() {
         Scanner scanner = new Scanner(System.in);
         Integer bombNum = null;
         while (bombNum == null || bombNum < 0 || bombNum > 80) {
@@ -23,20 +23,8 @@ public class MineSweeper {
         while (bombIndices.size() < bombNum) {
             bombIndices.add(random.nextInt(81));
         }
-        Grid grid = new Grid(9);
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                GameSquare square;
-                if (bombIndices.contains(i * 9 + j)) {
-                    square = new BombSquare(i, j, grid);
-                } else if (i == 0 || i == 8 || j == 0 || j == 8) {
-                    square = new EdgeSquare(i, j, grid);
-                } else {
-                    square = new SafeSquare(i, j, grid);
-                }
-                grid.setSquareValue(i, j, square);
-            }
-        }
+        Grid grid = new Grid(9, 9);
+        grid.populateGrid(bombIndices);
         grid.printGrid();
     }
 }

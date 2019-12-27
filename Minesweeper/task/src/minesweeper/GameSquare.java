@@ -1,20 +1,13 @@
 package minesweeper;
 
-public class GameSquare {
-    int row;
-    int col;
-    Grid grid;
+class GameSquare {
+    private boolean hasBomb;
 
-    GameSquare(int index, Grid grid) {
-        int cols = grid.getCols();
-        this.grid = grid;
-        this.row = index/cols;
-        this.col = index % cols;
+    GameSquare(boolean hasBomb) {
+        this.hasBomb = hasBomb;
     }
 
-    GameSquare(int row, int col, Grid grid) {
-        this.grid = grid;
-        this.row = row;
-        this.col = col;
+    boolean getHasBomb() {
+        return hasBomb;
     }
 }
