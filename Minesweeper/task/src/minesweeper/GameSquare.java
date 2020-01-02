@@ -1,34 +1,48 @@
 package minesweeper;
 
 class GameSquare {
-    private boolean hasBomb;
-    private boolean isHidden;
+    private boolean bomb;
+    private boolean visible;
+    private boolean marked;
     private int adjacentBombCount;
 
-    GameSquare(boolean hasBomb) {
-        this.hasBomb = hasBomb;
-        this.isHidden = true;
+    GameSquare() {
+        this.bomb = false;
+        this.visible = false;
+        this.marked = false;
     }
 
-    public int getAdjacentBombCount() {
+    boolean isBomb() {
+        return bomb;
+    }
+
+    boolean isMarked() {
+        return marked;
+    }
+
+    boolean isVisible() {
+        return visible;
+    }
+
+    int getAdjacentBombCount() {
         return adjacentBombCount;
     }
 
-    public void setAdjacentBombCount(int adjacentBombCount) {
+    void setAdjacentBombCount(int adjacentBombCount) {
         this.adjacentBombCount = adjacentBombCount;
     }
 
-    boolean getHasBomb() {
-        return hasBomb;
+    void setBomb() {
+        this.bomb = true;
     }
 
-    boolean getIsHidden() {
-        return isHidden;
+    void toggleMark() {
+        marked = !marked;
     }
 
     void reveal() {
-        if (!hasBomb) {
-            isHidden = false;
+        if (!bomb) {
+            visible = true;
         }
     }
 }
